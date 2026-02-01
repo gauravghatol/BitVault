@@ -771,8 +771,6 @@ MIT License - feel free to use for your portfolio!
 
 For issues, questions, or suggestions:
 - Open an issue on GitHub
-- Review the documentation in [EMAIL_OTP_SETUP.md](EMAIL_OTP_SETUP.md)
-- Check the [DEMO.md](DEMO.md) for usage examples
 
 ---
 
