@@ -135,7 +135,7 @@ verifyIntegrity() {
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/wallet-simulator.git
+git clone https://github.com/gauravghatol/BitVault
 cd wallet-simulator
 
 # Install backend dependencies
