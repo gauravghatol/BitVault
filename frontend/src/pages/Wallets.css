@@ -1,0 +1,345 @@
+.wallets-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.wallets-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+/* Storage Info */
+.storage-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.storage-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.storage-card.hot {
+  border-left: 3px solid var(--color-hot);
+}
+
+.storage-card.cold {
+  border-left: 3px solid var(--color-cold);
+}
+
+.storage-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.storage-card.hot .storage-icon {
+  color: var(--color-hot);
+}
+
+.storage-card.cold .storage-icon {
+  color: var(--color-cold);
+}
+
+.storage-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.storage-card p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Wallets Grid */
+.wallets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* Wallet Card */
+.wallet-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  text-decoration: none;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.wallet-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--wallet-color, var(--color-accent));
+}
+
+.wallet-card:hover {
+  border-color: var(--color-border-light);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.wallet-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-lg);
+}
+
+.wallet-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--wallet-color, var(--color-accent));
+}
+
+.wallet-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.badge-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.wallet-card-body {
+  flex: 1;
+  margin-bottom: var(--space-lg);
+}
+
+.wallet-card .wallet-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.wallet-address {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.wallet-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.wallet-balance {
+  display: flex;
+  flex-direction: column;
+}
+
+.balance-btc {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--color-text-primary);
+}
+
+.balance-usd {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.wallet-tx-count {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Empty State */
+.empty-wallets {
+  text-align: center;
+  padding: var(--space-2xl);
+  background: var(--color-bg-card);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+.empty-icon {
+  width: 64px;
+  height: 64px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-lg);
+}
+
+.empty-wallets h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+.empty-wallets p {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-lg);
+}
+
+/* Storage Selector */
+.storage-selector {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.storage-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: var(--color-bg-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.storage-option:hover {
+  border-color: var(--color-border-light);
+}
+
+.storage-option.active {
+  border-color: var(--color-accent);
+  background: var(--color-accent-glow);
+}
+
+.option-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--color-text-secondary);
+}
+
+.storage-option.active .option-icon {
+  color: var(--color-accent);
+}
+
+.option-title {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.option-desc {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Warning Box */
+.warning-box {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-warning-bg);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-md);
+  color: var(--color-warning);
+}
+
+.warning-box svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.warning-box.critical {
+  background: var(--color-error-bg);
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+/* Private Key Display */
+.success-message {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  color: var(--color-success);
+  margin-bottom: var(--space-md);
+}
+
+.success-message h4 {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+.success-message p {
+  color: var(--color-text-secondary);
+}
+
+.private-key-display,
+.public-address-display {
+  margin-top: var(--space-lg);
+}
+
+.key-box,
+.address-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.key-box code,
+.address-box code {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  word-break: break-all;
+}
+
+.key-box .copy-btn {
+  padding: 8px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.key-box .copy-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .storage-info {
+    grid-template-columns: 1fr;
+  }
+
+  .storage-selector {
+    grid-template-columns: 1fr;
+  }
+}

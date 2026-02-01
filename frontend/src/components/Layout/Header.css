@@ -1,0 +1,347 @@
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 280px;
+  height: 72px;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-xl);
+  z-index: 50;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.menu-btn {
+  display: none;
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.menu-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.menu-btn:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-tertiary);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.btc-price {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.625rem 1rem;
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.price-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.price-value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-family: var(--font-mono);
+}
+
+.price-change {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.price-change.positive {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.price-change.negative {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+/* Notification System */
+.notification-container {
+  position: relative;
+}
+
+.notification-btn {
+  position: relative;
+  padding: 0.625rem;
+  background: var(--color-bg-tertiary);
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.notification-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.notification-btn:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--color-error);
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-bg-secondary);
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 380px;
+  max-height: 500px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  z-index: 1000;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.notification-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.mark-all-read {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.mark-all-read:hover {
+  background: var(--color-accent-bg);
+}
+
+.notification-list {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.notification-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+.no-notifications {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+  color: var(--color-text-tertiary);
+  gap: var(--space-sm);
+}
+
+.no-notifications svg {
+  width: 48px;
+  height: 48px;
+  opacity: 0.5;
+}
+
+.no-notifications p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.notification-item:hover {
+  background: var(--color-bg-hover);
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item.unread {
+  background: var(--color-accent-bg);
+}
+
+.notification-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  flex: 1;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border-radius: var(--radius-md);
+}
+
+.notification-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.notification-text {
+  flex: 1;
+}
+
+.notification-text h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.notification-text p {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 0.25rem 0;
+  line-height: 1.4;
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.remove-notification {
+  flex-shrink: 0;
+  padding: 0.25rem;
+  background: transparent;
+  border: none;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  opacity: 0;
+}
+
+.notification-item:hover .remove-notification {
+  opacity: 1;
+}
+
+.remove-notification:hover {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.remove-notification svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 1024px) {
+  .header {
+    left: 0;
+    height: 64px;
+    padding: 0 var(--space-lg);
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  .btc-price {
+    display: none;
+  }
+
+  .notification-dropdown {
+    width: 320px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 0 var(--space-md);
+  }
+
+  .notification-dropdown {
+    width: calc(100vw - 2rem);
+    right: -1rem;
+  }
+}

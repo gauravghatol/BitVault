@@ -1,0 +1,436 @@
+.dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-xl);
+  gap: var(--space-lg);
+}
+
+.page-header h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+}
+
+.page-header p {
+  color: var(--color-text-muted);
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.btn-icon-left {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+
+/* Balance Card */
+.balance-card {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16161f 100%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light mode override for balance card */
+:root:not(.dark-mode) .balance-card {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+/* Light mode - force white text on dark card */
+:root:not(.dark-mode) .balance-card .balance-label,
+:root:not(.dark-mode) .balance-card .balance-btc,
+:root:not(.dark-mode) .balance-card .balance-usd,
+:root:not(.dark-mode) .balance-card .stat-value,
+:root:not(.dark-mode) .balance-card .stat-label {
+  color: #ffffff !important;
+}
+
+:root:not(.dark-mode) .balance-card .balance-btc {
+  color: #ffffff !important;
+}
+
+:root:not(.dark-mode) .balance-card .balance-usd {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+:root:not(.dark-mode) .balance-card .stat-label {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.balance-card::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%);
+  opacity: 0.5;
+}
+
+.balance-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-xl);
+  position: relative;
+}
+
+.balance-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.balance-label {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.balance-btc {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.balance-usd {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+}
+
+.balance-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #ff9f2d 100%);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+}
+
+.balance-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.balance-stats {
+  display: flex;
+  gap: var(--space-2xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+  position: relative;
+}
+
+.balance-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.balance-stat .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.balance-stat .stat-label {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.stat-icon.sent {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.stat-icon.received {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.stat-icon.fees {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-content .stat-label {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-bottom: 2px;
+}
+
+.stat-content .stat-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--color-text-primary);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--space-lg);
+}
+
+/* Transactions List */
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.tx-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tx-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.tx-icon.send {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.tx-icon.receive {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.tx-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tx-type {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.tx-address {
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+}
+
+.tx-amount {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+}
+
+.tx-amount .amount {
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.tx-amount .amount.send {
+  color: var(--color-error);
+}
+
+.tx-amount .amount.receive {
+  color: var(--color-success);
+}
+
+.tx-date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Wallets Preview */
+.wallets-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.wallet-preview-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border-left: 3px solid var(--wallet-color, var(--color-accent));
+}
+
+.wallet-preview-item:hover {
+  background: var(--color-bg-hover);
+  transform: translateX(4px);
+}
+
+.wallet-preview-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--wallet-color, var(--color-accent));
+}
+
+.wallet-preview-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.wallet-preview-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.wallet-name {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.wallet-type {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.wallet-type.hot {
+  color: var(--color-hot);
+}
+
+.wallet-type.cold {
+  color: var(--color-cold);
+}
+
+.wallet-preview-balance .balance {
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--color-text-primary);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.empty-state p {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-actions {
+    justify-content: stretch;
+  }
+
+  .header-actions .btn {
+    flex: 1;
+  }
+
+  .balance-btc {
+    font-size: 2rem;
+  }
+
+  .balance-stats {
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
