@@ -10,14 +10,12 @@ const createTransporter = () => {
   // Log for debugging
   console.log('Email Config - USER:', process.env.EMAIL_USER ? 'SET' : 'MISSING');
   console.log('Email Config - PASS:', process.env.EMAIL_PASS ? 'SET' : 'MISSING');
-  console.log('Nodemailer:', nodemailer);
-  console.log('Nodemailer keys:', Object.keys(nodemailer));
   
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     throw new Error('Email configuration missing. Set EMAIL_USER and EMAIL_PASS environment variables.');
   }
   
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: process.env.EMAIL_USER,
