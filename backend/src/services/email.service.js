@@ -7,6 +7,14 @@ const nodemailer = require('nodemailer');
 
 // Create transporter with Gmail
 const createTransporter = () => {
+  // Log for debugging (remove in production after fixing)
+  console.log('Email Config - USER:', process.env.EMAIL_USER ? 'SET' : 'MISSING');
+  console.log('Email Config - PASS:', process.env.EMAIL_PASS ? 'SET' : 'MISSING');
+  
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    throw new Error('Email configuration missing. Set EMAIL_USER and EMAIL_PASS environment variables.');
+  }
+  
   return nodemailer.createTransporter({
     service: 'gmail',
     auth: {
@@ -221,9 +229,13 @@ const sendOTPEmail = async (email, otp, firstName) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
+    console.log('✓ OTP Email sent successfully:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    throw new Error('Failed to send verification email');
+    console.error('✗ Email sending error:', error.message);
+    console.error('Error code:', error.code);
+    console.error('Error details:', error);
+    throw new Error(`Email service error: ${error.message}`);
   }
 };
 
@@ -330,7 +342,7 @@ const sendWelcomeEmail = async (email, firstName) => {
               </ul>
               
               <div style="text-align: center;">
-                <a href="http://localhost:3000/login" class="cta-button">Login to Your Account</a>
+                <a href="${process.env.CORS_ORIGIN || 'http://localhost:3000'}/login" class="cta-button">Login to Your Account</a>
               </div>
             </div>
             
@@ -344,7 +356,9 @@ const sendWelcomeEmail = async (email, firstName) => {
     };
 
     await transporter.sendMail(mailOptions);
+    console.log('✓ Welcome email sent successfully');
   } catch (error) {
+    console.error('✗ Welcome email failed (non-critical):', error.message);
     // Don't throw error for welcome email - it's not critical
   }
 };

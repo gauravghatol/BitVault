@@ -36,6 +36,13 @@ const Register = () => {
       return;
     }
 
+    // Validate password complexity
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+    if (!passwordRegex.test(formData.password)) {
+      toast.error('Password must contain at least one uppercase letter, one lowercase letter, and one number');
+      return;
+    }
+
     setLoading(true);
 
     const result = await register({
@@ -162,7 +169,7 @@ const Register = () => {
                     value={formData.password}
                     onChange={handleChange}
                     className="form-input"
-                    placeholder="Min. 8 characters"
+                    placeholder="e.g., MyPass123"
                     required
                   />
                   <button
@@ -173,6 +180,9 @@ const Register = () => {
                     {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
                   </button>
                 </div>
+                <small style={{ color: '#888', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                  Must be 8+ characters with uppercase, lowercase, and number
+                </small>
               </div>
 
               <div className="form-group">
