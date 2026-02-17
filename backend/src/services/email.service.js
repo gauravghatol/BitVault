@@ -3,28 +3,18 @@
  * Handles email sending functionality using nodemailer
  */
 
-let nodemailer;
-try {
-  nodemailer = require('nodemailer');
-} catch (error) {
-  console.error('Failed to load nodemailer:', error);
-  throw new Error('Nodemailer module not found. Please install it.');
-}
+const nodemailer = require('nodemailer');
 
 // Create transporter with Gmail
 const createTransporter = () => {
-  // Log for debugging (remove in production after fixing)
+  // Log for debugging
   console.log('Email Config - USER:', process.env.EMAIL_USER ? 'SET' : 'MISSING');
   console.log('Email Config - PASS:', process.env.EMAIL_PASS ? 'SET' : 'MISSING');
-  console.log('Nodemailer type:', typeof nodemailer);
-  console.log('createTransporter available:', typeof nodemailer?.createTransporter);
+  console.log('Nodemailer:', nodemailer);
+  console.log('Nodemailer keys:', Object.keys(nodemailer));
   
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     throw new Error('Email configuration missing. Set EMAIL_USER and EMAIL_PASS environment variables.');
-  }
-  
-  if (!nodemailer || typeof nodemailer.createTransporter !== 'function') {
-    throw new Error('Nodemailer not properly initialized. Check if nodemailer is installed.');
   }
   
   return nodemailer.createTransporter({
