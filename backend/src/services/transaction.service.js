@@ -34,17 +34,17 @@ class TransactionService {
     }).select('+encryptedPrivateKey');
 
     if (!senderWallet) {
-      throw new Error('Sender wallet not found');
+      throw new Error('Wallet not found or is not active. Please select a valid wallet.');
     }
 
     // Validate recipient address
     if (!cryptoService.validateAddress(toAddress)) {
-      throw new Error('Invalid recipient address');
+      throw new Error('The recipient Bitcoin address is invalid. Please check the address and try again.');
     }
 
     // Prevent sending to self
     if (senderWallet.publicAddress === toAddress) {
-      throw new Error('Cannot send to the same address');
+      throw new Error('You cannot send Bitcoin to the same wallet. Please use a different recipient address.');
     }
 
     // Calculate fee (simulated - 0.0001 BTC = 10000 satoshis)
@@ -53,7 +53,9 @@ class TransactionService {
 
     // Check balance
     if (senderWallet.balance < totalAmount) {
-      throw new Error(`Insufficient balance. Available: ${senderWallet.balance} satoshis, Required: ${totalAmount} satoshis`);
+      const availableBTC = (senderWallet.balance / 100000000).toFixed(8);
+      const requiredBTC = (totalAmount / 100000000).toFixed(8);
+      throw new Error(`Insufficient balance. You have ${availableBTC} BTC available, but need ${requiredBTC} BTC (including 0.0001 BTC network fee).`);
     }
 
     // Get private key based on storage type
@@ -68,15 +70,27 @@ class TransactionService {
     } else {
       // Cold wallet - private key must be provided by user
       if (!privateKey) {
-        throw new Error('Private key required for cold wallet transaction');
+        throw new Error('This is a cold storage wallet. You must enter the private key that was shown when you created this wallet. If you did not save it, the funds cannot be accessed.');
+      }
+      
+      // Convert WIF to HEX if necessary
+      let privateKeyHex = privateKey;
+      if (privateKey.match(/^[5KL]/)) {
+        try {
+          privateKeyHex = cryptoService.wifToHex(privateKey);
+        } catch (error) {
+          throw new Error('Invalid private key format. Please enter the private key exactly as it was shown when you created this wallet (either HEX or WIF format).');
+        }
+      } else if (!privateKey.match(/^[0-9a-fA-F]{64}$/)) {
+        throw new Error('Invalid private key format. The private key should be 64 hexadecimal characters or in WIF format (starting with 5, K, or L).');
       }
       
       // Validate the provided private key
-      if (!walletService.validatePrivateKeyForWallet(privateKey, senderWallet.publicAddress)) {
-        throw new Error('Invalid private key for this wallet');
+      if (!walletService.validatePrivateKeyForWallet(privateKeyHex, senderWallet.publicAddress)) {
+        throw new Error('The private key you entered does not match this wallet. Please enter the correct private key that was displayed when you created this cold wallet.');
       }
       
-      signingKey = privateKey;
+      signingKey = privateKeyHex;
     }
 
     // Generate transaction ID

@@ -12,9 +12,14 @@ const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map(err => err.msg);
+    const mainMessage = errorMessages.length === 1 
+      ? errorMessages[0] 
+      : 'Validation failed: ' + errorMessages.join(', ');
+    
     return res.status(400).json({
       success: false,
-      message: 'Validation failed',
+      message: mainMessage,
       errors: errors.array().map(err => ({
         field: err.path,
         message: err.msg
@@ -140,8 +145,13 @@ const transactionValidation = {
       .withMessage('Memo cannot exceed 500 characters'),
     body('privateKey')
       .optional()
-      .isLength({ min: 64, max: 64 })
-      .withMessage('Invalid private key format'),
+      .custom((value) => {
+        // Accept WIF format (51-52 chars) or HEX format (64 chars)
+        const isWIF = value.length >= 51 && value.length <= 52;
+        const isHEX = value.length === 64 && /^[0-9a-fA-F]+$/.test(value);
+        return isWIF || isHEX;
+      })
+      .withMessage('Private key format is invalid. Please enter the complete private key shown when you created this cold wallet'),
     handleValidationErrors
   ],
   

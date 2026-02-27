@@ -52,7 +52,9 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.message || 'Login failed'
+        message: error.response?.data?.message || 'Login failed',
+        requiresVerification: error.response?.data?.requiresVerification,
+        email: error.response?.data?.email
       };
     }
   };

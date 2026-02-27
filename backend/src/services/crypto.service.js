@@ -95,10 +95,41 @@ class CryptoService {
   }
 
   /**
-   * Validate if a private key corresponds to a public address
+   * Convert WIF private key to HEX format
    */
-  validateKeyPair(privateKeyHex, publicAddress) {
+  wifToHex(wif) {
     try {
+      const network = this.getNetwork();
+      const keyPair = ECPair.fromWIF(wif, network);
+      return keyPair.privateKey.toString('hex');
+    } catch (error) {
+      throw new Error('Invalid WIF format');
+    }
+  }
+
+  /**
+   * Validate if a private key corresponds to a public address
+   * Accepts both HEX and WIF formats
+   */
+  validateKeyPair(privateKeyInput, publicAddress) {
+    try {
+      let privateKeyHex;
+      
+      // Check if input is WIF format (starts with specific characters)
+      if (privateKeyInput.match(/^[5KL]/)) {
+        try {
+          privateKeyHex = this.wifToHex(privateKeyInput);
+        } catch (error) {
+          return false;
+        }
+      } else if (privateKeyInput.match(/^[0-9a-fA-F]{64}$/)) {
+        // HEX format (64 characters)
+        privateKeyHex = privateKeyInput;
+      } else {
+        // Invalid format
+        return false;
+      }
+      
       const derived = this.deriveKeyPair(privateKeyHex);
       return derived.address === publicAddress;
     } catch (error) {

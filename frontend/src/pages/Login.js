@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
@@ -8,6 +8,7 @@ import './Auth.css';
 
 const Login = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -28,7 +29,13 @@ const Login = () => {
     if (result.success) {
       toast.success('Welcome back!');
     } else {
-      toast.error(result.message);
+      // If email not verified, redirect to verification page
+      if (result.requiresVerification) {
+        toast.error(result.message);
+        navigate('/verify-otp', { state: { email: result.email || formData.email } });
+      } else {
+        toast.error(result.message);
+      }
     }
     
     setLoading(false);
