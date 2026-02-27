@@ -42,12 +42,14 @@ exports.register = async (req, res, next) => {
     // Send OTP email
     try {
       await sendOTPEmail(email, otp, firstName);
+      console.log('✅ Registration successful for:', email);
     } catch (emailError) {
       // If email fails, delete the user and return error
+      console.error('❌ Registration failed - email error for:', email, emailError.message);
       await User.findByIdAndDelete(user._id);
       return res.status(500).json({
         success: false,
-        message: 'Failed to send verification email. Please try again.'
+        message: emailError.message || 'Failed to send verification email. Please try again or contact support if the issue persists.'
       });
     }
 

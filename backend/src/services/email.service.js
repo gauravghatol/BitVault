@@ -7,20 +7,29 @@ const nodemailer = require('nodemailer');
 
 // Create transporter with Gmail
 const createTransporter = () => {
-  // Log for debugging
-  console.log('Email Config - USER:', process.env.EMAIL_USER ? 'SET' : 'MISSING');
-  console.log('Email Config - PASS:', process.env.EMAIL_PASS ? 'SET' : 'MISSING');
+  // Log for debugging (only in development)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Email Config - USER:', process.env.EMAIL_USER ? 'SET' : 'MISSING');
+    console.log('Email Config - PASS:', process.env.EMAIL_PASS ? 'SET' : 'MISSING');
+  }
   
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.error('❌ Email configuration missing');
     throw new Error('Email configuration missing. Set EMAIL_USER and EMAIL_PASS environment variables.');
   }
   
-  return nodemailer.createTransport({
+  return nodemailer.createTransporter({
     service: 'gmail',
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
-    }
+    },
+    tls: {
+      rejectUnauthorized: true
+    },
+    connectionTimeout: 10000, // 10 seconds
+    greetingTimeout: 10000,
+    socketTimeout: 10000
   });
 };
 
@@ -39,12 +48,13 @@ const generateOTP = () => {
  */
 const sendOTPEmail = async (email, otp, firstName) => {
   try {
+    console.log(`📧 Attempting to send OTP email to: ${email}`);
     const transporter = createTransporter();
 
     const mailOptions = {
       from: {
         name: 'BitVault',
-        address: 'gauravghatol4@gmail.com'
+        address: process.env.EMAIL_USER
       },
       to: email,
       subject: 'BitVault - Verify Your Email Address',
@@ -229,13 +239,28 @@ const sendOTPEmail = async (email, otp, firstName) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log('✓ OTP Email sent successfully:', info.messageId);
+    console.log('✅ OTP Email sent successfully to:', email, '| MessageId:', info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('✗ Email sending error:', error.message);
+    console.error('❌ Email sending failed for:', email);
+    console.error('Error message:', error.message);
     console.error('Error code:', error.code);
-    console.error('Error details:', error);
-    throw new Error(`Email service error: ${error.message}`);
+    
+    // Provide user-friendly error messages based on error type
+    let userMessage = 'Failed to send verification email. ';
+    
+    if (error.code === 'EAUTH' || error.responseCode === 535) {
+      userMessage += 'Email service authentication failed. Please contact support.';
+      console.error('🔒 EMAIL AUTH ERROR: Check EMAIL_USER and EMAIL_PASS in Render environment variables');
+    } else if (error.code === 'ETIMEDOUT' || error.code === 'ECONNECTION') {
+      userMessage += 'Email service connection timeout. Please try again.';
+    } else if (error.code === 'EENVELOPE') {
+      userMessage += 'Invalid email address provided.';
+    } else {
+      userMessage += 'Please try again or contact support.';
+    }
+    
+    throw new Error(userMessage);
   }
 };
 
@@ -246,6 +271,7 @@ const sendOTPEmail = async (email, otp, firstName) => {
  */
 const sendWelcomeEmail = async (email, firstName) => {
   try {
+    console.log(`📧 Sending welcome email to: ${email}`);
     const transporter = createTransporter();
 
     const mailOptions = {
